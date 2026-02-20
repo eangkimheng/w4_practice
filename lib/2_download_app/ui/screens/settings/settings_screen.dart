@@ -10,43 +10,47 @@ class SettingsScreen extends StatelessWidget {
  
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: currentThemeColor.backgroundColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(height: 16),
-          Text(
-            "Settings",
-            style: AppTextStyles.heading.copyWith(
-              color: currentThemeColor.color,
+    return ListenableBuilder(
+    listenable: themeColorProvider,
+    builder: (context, child) {
+      return Container(
+        color: themeColorProvider.currentThemeColor.backgroundColor,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 16),
+            Text(
+              "Settings",
+              style: AppTextStyles.heading.copyWith(
+                color: themeColorProvider.currentThemeColor.color,
+              ),
             ),
-          ),
-
-          SizedBox(height: 50),
-
-          Text(
-            "Theme",
-            style: AppTextStyles.label.copyWith(color: AppColors.textLight),
-          ),
-
-          SizedBox(height: 10),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: ThemeColor.values
-                .map(
-                  (theme) => ThemeColorButton(
-                    themeColor: theme,
-                    isSelected: theme == currentThemeColor,
-                    onTap: (value) { },
-                  ),
-                )
-                .toList(),
-          ),
-        ],
-      ),
-    );
+            const SizedBox(height: 50),
+            Text(
+              "Theme",
+              style: AppTextStyles.label.copyWith(
+                color: AppColors.textLight,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: ThemeColor.values.map((theme) {
+                return ThemeColorButton(
+                  themeColor: theme,
+                  isSelected: theme ==
+                      themeColorProvider.currentThemeColor,
+                  onTap: (value) {
+                    themeColorProvider.changeTheme(value);
+                  },
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+      );
+    },
+  );
   }
 }
  
