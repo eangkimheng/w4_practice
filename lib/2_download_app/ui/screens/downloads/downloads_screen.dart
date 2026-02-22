@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../providers/theme_color_provider.dart';
 import '../../theme/theme.dart';
 import 'widgets/download_controler.dart';
-
+import 'widgets/download_tile.dart';
 
 class DownloadsScreen extends StatelessWidget {
   // Create the list of fake ressources
@@ -24,27 +24,35 @@ class DownloadsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-    listenable: themeColorProvider,
-    builder: (context, child) {
-      return Container(
-        color: themeColorProvider.currentThemeColor.backgroundColor,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 16),
-            Text(
-              "Downloads",
-              style: AppTextStyles.heading.copyWith(
-                color: themeColorProvider.currentThemeColor.color,
+      listenable: themeColorProvider,
+      builder: (context, child) {
+        return Container(
+          color: themeColorProvider.currentThemeColor.backgroundColor,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 16),
+              Text(
+                "Downloads",
+                style: AppTextStyles.heading.copyWith(
+                  color: themeColorProvider.currentThemeColor.color,
+                ),
               ),
-            ),
-            const SizedBox(height: 50),
+              const SizedBox(height: 50),
 
-            // TODO - Add the Download tiles
-          ],
-        ),
-      );
-    },
-  );
+              // TODO - Add the Download tiles
+              Expanded(
+                child: ListView.builder(
+                  itemBuilder: (context, index) {
+                    return DownloadTile(controller: controllers[index]);
+                  },
+                  itemCount: controllers.length,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
